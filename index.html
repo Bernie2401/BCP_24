@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Valentine</title>
+  <title>Pregunta</title>
 
   <style>
     body{
@@ -42,7 +42,7 @@
       color:#222;
     }
 
-    /* Zona donde se mueve el botón NO */
+    /* Zona donde se mueve el NO */
     #arena{
       position:relative;
       width:100%;
@@ -89,7 +89,6 @@
 
   <!-- Pantalla 1 -->
   <div class="wrap" id="screenAsk">
-    <!-- OJO: imágenes en la raíz -->
     <img id="mainImg" src="./minion.jpg" alt="minion">
     <div id="mainFallback" class="fallback">🟡</div>
 
@@ -113,7 +112,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
 
-  // Si una imagen no carga, no sale el icono roto: sale un emoji
+  // Si una imagen no carga, muestra emoji en vez de icono roto
   const mainImg = $("mainImg");
   const mainFallback = $("mainFallback");
   mainImg.onerror = () => { mainImg.style.display = "none"; mainFallback.style.display = "block"; };
@@ -127,7 +126,7 @@
   const no  = $("no");
   const arena = $("arena");
 
-  const noTexts = ["No","Are you sure?","Really sure?","Think again","Last chance","Please 😭"];
+  const noTexts = ["No","¿Segura?","¿De verdad?","Piénsalo bien","Última oportunidad","Ya pues 😭"];
 
   function moveNo() {
     const rect = arena.getBoundingClientRect();
@@ -148,13 +147,8 @@
     e.preventDefault();
     tries++;
 
-    // Cambia texto del NO
     no.textContent = noTexts[Math.min(tries, noTexts.length - 1)];
-
-    // Agranda el YES
     yes.style.transform = `translateX(-50%) scale(${1 + tries * 0.18})`;
-
-    // Mueve el NO
     moveNo();
   }
 
@@ -163,11 +157,10 @@
   no.addEventListener("mouseenter", onNo);
   no.addEventListener("touchstart", onNo, { passive:false });
 
-  // YES: muestra fuegos y luego te manda a Google
+  // YES: solo muestra la pantalla final (NO redirige a ningún lado)
   yes.addEventListener("click", () => {
     $("screenAsk").classList.add("hidden");
     $("screenYay").classList.remove("hidden");
-  //  setTimeout(() => window.location.href = "https://www.google.com", 1200);
   });
 
   // posición inicial del NO
@@ -177,6 +170,7 @@
 
 </body>
 </html>
+
 
 
 
