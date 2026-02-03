@@ -42,7 +42,6 @@
       color:#222;
     }
 
-    /* Zona donde se mueve el NO */
     #arena{
       position:relative;
       width:100%;
@@ -87,7 +86,6 @@
 
 <body>
 
-  <!-- Pantalla 1 -->
   <div class="wrap" id="screenAsk">
     <img id="mainImg" src="./minion.jpg" alt="minion">
     <div id="mainFallback" class="fallback">🟡</div>
@@ -100,19 +98,17 @@
     </div>
   </div>
 
-  <!-- Pantalla 2 -->
   <div class="wrap hidden" id="screenYay">
     <img id="yayImg" src="./yay.jpg" alt="yay">
     <div id="yayFallback" class="fallback">🎆</div>
 
-    <h2><3!!!</h2>
+    <h2>&lt;3</h2>
   </div>
 
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
 
-  // Si una imagen no carga, muestra emoji en vez de icono roto
   const mainImg = $("mainImg");
   const mainFallback = $("mainFallback");
   mainImg.onerror = () => { mainImg.style.display = "none"; mainFallback.style.display = "block"; };
@@ -152,24 +148,22 @@
     moveNo();
   }
 
-  // NO funciona en PC y celular
   no.addEventListener("click", onNo);
   no.addEventListener("mouseenter", onNo);
   no.addEventListener("touchstart", onNo, { passive:false });
 
-  // YES: solo muestra la pantalla final (NO redirige a ningún lado)
   yes.addEventListener("click", () => {
     $("screenAsk").classList.add("hidden");
     $("screenYay").classList.remove("hidden");
   });
 
-  // posición inicial del NO
   setTimeout(moveNo, 80);
 })();
 </script>
 
 </body>
 </html>
+
 
 
 
