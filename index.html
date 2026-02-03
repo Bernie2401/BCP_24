@@ -3,14 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Game</title>
+  <title>Valentine</title>
+
   <style>
     body{
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background:#fafafa; margin:0; min-height:100vh;
-      display:grid; place-items:center;
+      background:#fafafa;
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
     }
-    .wrap{ width:min(520px,92vw); text-align:center; padding:24px 16px; }
+
+    .wrap{
+      width:min(520px,92vw);
+      text-align:center;
+      padding:24px 16px;
+    }
+
     img{
       width:min(280px,70vw);
       height:auto;
@@ -19,14 +29,20 @@
       display:block;
       margin:0 auto;
     }
+
     .fallback{
       display:none;
       font-size:64px;
-      margin:8px 0 0;
+      margin:10px 0 0;
     }
-    h2{ margin:16px 0 14px; font-weight:600; color:#222; }
 
-    /* Zona donde se mueven los botones */
+    h2{
+      margin:16px 0 14px;
+      font-weight:600;
+      color:#222;
+    }
+
+    /* Zona donde se mueve el botón NO */
     #arena{
       position:relative;
       width:100%;
@@ -68,10 +84,13 @@
     .hidden{ display:none; }
   </style>
 </head>
+
 <body>
 
+  <!-- Pantalla 1 -->
   <div class="wrap" id="screenAsk">
-    <img id="mainImg" src="./img/minion.jpg" alt="minion">
+    <!-- OJO: imágenes en la raíz -->
+    <img id="mainImg" src="./minion.jpg" alt="minion">
     <div id="mainFallback" class="fallback">🟡</div>
 
     <h2>Will you be my valentine?</h2>
@@ -82,9 +101,11 @@
     </div>
   </div>
 
+  <!-- Pantalla 2 -->
   <div class="wrap hidden" id="screenYay">
-    <img id="yayImg" src="./img/yay.jpg" alt="yay">
+    <img id="yayImg" src="./yay.jpg" alt="yay">
     <div id="yayFallback" class="fallback">🎆</div>
+
     <h2>YAYYY!!!</h2>
   </div>
 
@@ -92,7 +113,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
 
-  // 1) Fallback de imágenes: si no cargan, NO sale el icono roto, sale emoji
+  // Si una imagen no carga, no sale el icono roto: sale un emoji
   const mainImg = $("mainImg");
   const mainFallback = $("mainFallback");
   mainImg.onerror = () => { mainImg.style.display = "none"; mainFallback.style.display = "block"; };
@@ -101,10 +122,9 @@
   const yayFallback = $("yayFallback");
   yayImg.onerror = () => { yayImg.style.display = "none"; yayFallback.style.display = "block"; };
 
-  // 2) Lógica del juego
   let tries = 0;
   const yes = $("yes");
-  const no = $("no");
+  const no  = $("no");
   const arena = $("arena");
 
   const noTexts = ["No","Are you sure?","Really sure?","Think again","Last chance","Please 😭"];
@@ -128,30 +148,36 @@
     e.preventDefault();
     tries++;
 
+    // Cambia texto del NO
     no.textContent = noTexts[Math.min(tries, noTexts.length - 1)];
+
+    // Agranda el YES
     yes.style.transform = `translateX(-50%) scale(${1 + tries * 0.18})`;
+
+    // Mueve el NO
     moveNo();
   }
 
-  // “No” se activa con click en PC y toque en celular
+  // NO funciona en PC y celular
   no.addEventListener("click", onNo);
   no.addEventListener("mouseenter", onNo);
   no.addEventListener("touchstart", onNo, { passive:false });
 
-  // “Yes” SIEMPRE funciona: cambia pantalla y luego te manda a Google
+  // YES: muestra fuegos y luego te manda a Google
   yes.addEventListener("click", () => {
     $("screenAsk").classList.add("hidden");
     $("screenYay").classList.remove("hidden");
     setTimeout(() => window.location.href = "https://www.google.com", 1200);
   });
 
-  // posición inicial del No
+  // posición inicial del NO
   setTimeout(moveNo, 80);
 })();
 </script>
 
 </body>
 </html>
+
 
 
 
