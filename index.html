@@ -3,63 +3,68 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Valentine</title>
+  <title>Juego</title>
   <style>
-    body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background:#fafafa; margin:0; min-height:100vh;
-      display:grid; place-items:center;
-    }
-    .wrap{
-      width:min(520px, 92vw);
-      text-align:center;
-      padding:22px 16px 26px;
-    }
-    img{
-      width:min(280px, 70vw);
-      height:auto;
-      border-radius:10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.12);
-    }
-    h2{ margin:16px 0 10px; font-weight:600; color:#222; }
-    .stage{
-      position:relative;
-      height:120px;
-      margin-top:10px;
-    }
-    .btn{
-      border:1px solid #ddd;
-      background:#fff;
-      padding:12px 18px;
-      border-radius:10px;
-      font-size:16px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    #yes{
-      transition: transform .12s ease, font-size .12s ease, padding .12s ease;
-    }
-    #no{
-      position:absolute;
-      left: 55%;
-      top: 12px;
-      transition: transform .08s ease;
-    }
-    .row{
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      align-items:flex-start;
-      margin-top:12px;
-    }
-    .hidden{ display:none; }
-    .yay img{ width:min(320px, 78vw); }
+    body{font-family:system-ui;background:#fafafa;margin:0;min-height:100vh;display:grid;place-items:center}
+    .wrap{width:min(520px,92vw);text-align:center;padding:22px 16px 26px}
+    img{width:min(280px,70vw);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+    h2{margin:16px 0 10px;font-weight:600;color:#222}
+    .stage{position:relative;min-height:170px;margin-top:10px}
+    .btn{border:1px solid #ddd;background:#fff;padding:12px 18px;border-radius:10px;font-size:16px;cursor:pointer;user-select:none}
+    #yes{transition:transform .12s ease;background:#1a73e8;color:#fff;border:0}
+    #no{position:absolute;left:55%;top:60px;background:#e9eef6;border:0}
+    .hidden{display:none}
+    #fallback{display:none;font-size:48px;margin:20px 0}
   </style>
 </head>
-
 <body>
+
   <div class="wrap" id="screenAsk">
-    <img id="pic" src="img/0.jpg" alt="pic" />
-    <h2 id="question">Will you be my valentine?</h2
+    <img id="pic" src="img/minion.jpg" alt="minion">
+    <div id="fallback">🙂</div>
+
+    <h2>Will you be my valentine?</h2>
+
+    <div class="stage" id="stage">
+      <button class="btn" id="yes">Yes</button>
+      <button class="btn" id="no">No</button>
+    </div>
+  </div>
+
+  <div class="wrap hidden" id="screenYay">
+    <img id="yayPic" src="img/yay.jpg" alt="yay">
+    <div id="fallback2" style="display:none;font-size:48px;margin:20px 0">🎉</div>
+    <h2>YAYYY!!!</h2>
+  </div>
+
+<script>
+  // Si la imagen no carga, muestra el fallback (para que nunca salga “pic” roto)
+  const pic = document.getElementById("pic");
+  const fallback = document.getElementById("fallback");
+  pic.onerror = () => { pic.style.display="none"; fallback.style.display="block"; };
+
+  const yayPic = document.getElementById("yayPic");
+  const fallback2 = document.getElementById("fallback2");
+  yayPic.onerror = () => { yayPic.style.display="none"; fallback2.style.display="block"; };
+
+  let tries = 0;
+  const yes = document.getElementById("yes");
+  const no  = document.getElementById("no");
+  const stage = document.getElementById("stage");
+
+  const noTexts = ["No","Are you sure?","Really sure?","Think again","Last chance","Please 😭"];
+
+  function moveNo(){
+    const rect = stage.getBoundingClientRect();
+    const b = no.getBoundingClientRect();
+    const maxX = Math.max(0, rect.width - b.width);
+    const maxY = Math.max(0, rect.height - b.height);
+
+    no.style.left = (Math.random() * maxX) + "px";
+    no.style.top  = (Math.random() * maxY) + "px";
+  }
+
+  function onNoAttempt(e){
+    e.preven
+
 
